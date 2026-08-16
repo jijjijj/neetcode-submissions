@@ -1,0 +1,55 @@
+class Solution {
+public:
+    void solve(vector<vector<char>>& grid) {
+        const int h = grid.size();
+        const int w = grid[0].size();
+
+        std::vector<bool> vis(h * w);
+        std::queue<std::pair<int, int>> q;
+
+        auto add = [&grid, &vis, &q, w](int x, int y) {
+            if (grid[y][x] == 'O') {
+                vis[y * w + x] = true;
+                q.push({ x, y });
+            }
+        };
+
+        for (int x = 0; x < w; ++x) {
+            add(x, 0);
+            add(x, h - 1);
+        }
+
+        for (int y = 0; y < h; ++y) {
+            add(0, y);
+            add(w - 1, y);
+        }
+
+        const std::vector<std::pair<int, int>> dirs = {
+            { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 }
+        };
+
+        while (!q.empty()) {
+            const auto [x, y] = q.front();
+            q.pop();
+
+            for (const auto [dx, dy] : dirs) {
+                const int cx = dx + x;
+                const int cy = dy + y;
+
+                if (cx < 0 || cy < 0 || cx >= w || cy >= h ||
+                    grid[cy][cx] != 'O' || vis[cy * w + cx]) continue;
+
+                vis[cy * w + cx] = true;
+                q.push({ cx, cy });
+            }
+        }
+
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                if (!vis[y * w + x] && grid[y][x] == 'O') {
+                    grid[y][x] = 'X';
+                }
+            }
+        }
+    }
+};
