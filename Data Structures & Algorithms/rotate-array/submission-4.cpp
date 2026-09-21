@@ -1,0 +1,10 @@
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        const int n = nums.size();
+        
+        k %= n;
+
+        std::rotate(nums.begin(), nums.end() - k, nums.end());
+    }
+};
