@@ -1,0 +1,22 @@
+#include <ranges>
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums,
+        int target) {
+        std::vector<int> res{ -1, -1 };
+
+        auto it = std::ranges::lower_bound(
+            nums.begin(), nums.end(), target);
+
+        if (it == nums.end() || *it != target) return res;
+
+        auto it2 = std::ranges::lower_bound(
+            nums.rbegin(), nums.rend(), target, std::greater<>{});
+
+        res[0] = (it - nums.begin());
+        res[1] = (nums.rend() - it2 - 1);
+
+        return res;
+    }
+};
