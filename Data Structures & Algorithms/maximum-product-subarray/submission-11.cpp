@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int res = std::numeric_limits<int>::min();
+        int pos = 1;
+        int neg = 1;
+
+        for (const int v : nums) {
+            const int t = pos;
+            pos = std::max({ v, pos * v, neg * v });
+            neg = std::min({ v, neg * v, t * v });
+            res = std::max({ res, pos, neg });
+        }
+
+        return res;
+    }
+};
